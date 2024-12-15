@@ -20,5 +20,5 @@ jobs:
 
       - name: Push changes to new repository
         run: |
-          git remote add new-origin https://github.com/love-Liushuang/NotionNext_news.git
+          git remote add new-origin https://github.com/love-Liushuang/NotionNextNews.git
           git push -u new-origin main --force
