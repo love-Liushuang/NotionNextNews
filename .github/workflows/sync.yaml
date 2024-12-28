@@ -32,7 +32,8 @@ jobs:
       - name: Sync updates from upstream
         run: |
           git checkout -b sync-updates
-          git merge upstream/main --allow-unrelated-histories --no-edit
+          # 合并上游代码时，使用 "ours" 策略保留本地文件
+          git merge -X ours upstream/main --allow-unrelated-histories --no-edit || true
 
       - name: Push updates to a new branch
         run: |
