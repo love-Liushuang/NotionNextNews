@@ -26,11 +26,11 @@ jobs:
           git remote add upstream https://github.com/love-Liushuang/NotionNext.git
           git fetch upstream
 
-      # 3. 合并上游更新到新的分支
+      # 3. 创建新分支并强制合并
       - name: Sync updates from upstream
         run: |
           git checkout -b sync-updates
-          git merge upstream/main --no-edit
+          git merge upstream/main --allow-unrelated-histories --no-edit
 
       # 4. 推送新分支到目标仓库
       - name: Push updates to new branch
