@@ -12,25 +12,26 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout target repository
+      - name: Checkout source repository
         uses: actions/checkout@v3
         with:
           repository: love-Liushuang/NotionNext
           ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
 
       - name: Configure Git
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Check for large files
+      - name: Check for updates
         run: |
-          git rev-list --objects --all | sort -k 2 -n | tail -n 10
+          git fetch origin main
+          git log origin/main --oneline
 
-      - name: Sync with remote repository
+      - name: Push changes to target repository
         run: |
           git remote add new-origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/love-Liushuang/NotionNextNews.git
-          git fetch new-origin || echo "No remote repository yet, proceeding..."
-          git reset --hard new-origin/main || echo "First push, skipping reset."
+          git reset --hard origin/main
           git push -u new-origin main --force
