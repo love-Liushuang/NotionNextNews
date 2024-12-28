@@ -19,7 +19,6 @@ jobs:
         with:
           repository: love-Liushuang/NotionNext
           ref: main
-          token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
       # 步骤 2: 配置 Git 信息
@@ -28,13 +27,20 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      # 步骤 3: 提交到目标仓库的新分支并创建 PR
+      # 步骤 3: 推送代码到目标仓库
+      - name: Push to target repository
+        run: |
+          git remote add new-origin https://github.com/love-Liushuang/NotionNextNews.git
+          git checkout -b sync-updates
+          git push -u new-origin sync-updates --force
+
+      # 步骤 4: 创建 Pull Request
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "Sync updates from NotionNext"
-          branch: sync-updates # 创建新分支
+          branch: sync-updates # 新分支
           base: main # 提交到目标仓库的 main 分支
           title: "Sync updates from NotionNext"
           body: "This PR contains updates from the source repository."
