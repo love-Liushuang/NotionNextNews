@@ -17,8 +17,15 @@ jobs:
         with:
           repository: love-Liushuang/NotionNext
           ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Push changes to new repository
         run: |
-          git remote add new-origin https://github.com/love-Liushuang/NotionNextNews.git
+          git remote add new-origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/love-Liushuang/NotionNextNews.git
+          git branch -M main
           git push -u new-origin main --force
