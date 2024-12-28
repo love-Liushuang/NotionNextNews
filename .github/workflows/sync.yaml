@@ -2,16 +2,18 @@ name: Upstream Sync
 
 permissions:
   contents: write
+  pull-requests: write
 
 on:
   schedule:
-    - cron: "0 0 * * *" # every day
-  workflow_dispatch:
+    - cron: "0 0 * * *" # 每天运行一次
+  workflow_dispatch: # 手动触发工作流
 
 jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
+      # 步骤 1: 拉取源仓库代码
       - name: Checkout source repository
         uses: actions/checkout@v3
         with:
@@ -20,18 +22,19 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
+      # 步骤 2: 配置 Git 信息
       - name: Configure Git
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Check for updates
-        run: |
-          git fetch origin main
-          git log origin/main --oneline
-
-      - name: Push changes to target repository
-        run: |
-          git remote add new-origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/love-Liushuang/NotionNextNews.git
-          git reset --hard origin/main
-          git push -u new-origin main --force
+      # 步骤 3: 提交到目标仓库的新分支并创建 PR
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "Sync updates from NotionNext"
+          branch: sync-updates # 创建新分支
+          base: main # 提交到目标仓库的 main 分支
+          title: "Sync updates from NotionNext"
+          body: "This PR contains updates from the source repository."
