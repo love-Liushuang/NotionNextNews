@@ -13,6 +13,11 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
+      - name: Set Git committer identity
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "actions@github.com"
+
       - name: Checkout target repository
         uses: actions/checkout@v3
         with:
