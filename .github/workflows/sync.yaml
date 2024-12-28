@@ -24,8 +24,13 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Push changes to new repository
+      - name: Check for large files
+        run: |
+          git rev-list --objects --all | sort -k 2 -n | tail -n 10
+
+      - name: Sync with remote repository
         run: |
           git remote add new-origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/love-Liushuang/NotionNextNews.git
-          git branch -M main
+          git fetch new-origin || echo "No remote repository yet, proceeding..."
+          git reset --hard new-origin/main || echo "First push, skipping reset."
           git push -u new-origin main --force
