@@ -1,24 +1,30 @@
 name: Upstream Sync
 
-permissions:
-  contents: write
-
 on:
   schedule:
-    - cron: "0 0 * * *" # every day
+    - cron: "0 0 * * *" # 每天同步一次
   workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
 
 jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
+      - name: Set Git committer identity
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "actions@github.com"
+
       - name: Checkout target repository
         uses: actions/checkout@v3
         with:
-          repository: love-Liushuang/NotionNext
+          repository: love-Liushuang/NotionNextNews
           ref: main
 
-      - name: Push changes to new repository
+      - name: Add upstream source repository
         run: |
           git remote add new-origin https://github.com/love-Liushuang/NotionNextNews.git
           git push -u new-origin main --force
