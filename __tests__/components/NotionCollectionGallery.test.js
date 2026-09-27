@@ -1,7 +1,7 @@
 /** @jest-environment node */
 
 import NotionCollection from '@/components/NotionCollection'
-import { galleryVisibilityClassName } from '@/lib/notion/galleryVisibilityClassName'
+import { galleryVisibilityClassName } from '@/lib/db/notion/galleryVisibilityClassName'
 import { execFileSync } from 'child_process'
 import React from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'

@@ -1,4 +1,4 @@
-import { galleryVisibilityClassName } from '@/lib/notion/galleryVisibilityClassName'
+import { galleryVisibilityClassName } from '@/lib/db/notion/galleryVisibilityClassName'
 import { Collection } from 'react-notion-x/build/third-party/collection'
 
 export default function NotionCollection(props) {
